@@ -1,0 +1,15 @@
+# Dependency directories (e.g., Node, Python, Ruby)
+node_modules/
+__pycache__/
+.venv/
+scripts/
+
+# Environment variables and secrets (NEVER commit these)
+.env
+.env.local
+*.pem
+
+# Log files and build output
+*.log
+dist/
+build/
