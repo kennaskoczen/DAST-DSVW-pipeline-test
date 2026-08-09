@@ -1,0 +1,33 @@
+name: Deploy App to EC2
+
+on:
+  push:
+    branches:
+      - master # Triggers deployment when you push to the main branch
+	
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4 # Clones your repository to the runner
+
+      - name: Sync Files to EC2 via SSH
+        uses: appleboy/scp-action@master # Securely copies your files over to EC2
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "."
+          target: "/home/${{ secrets.EC2_USERNAME }}/DAST-DSVW-pipeline-test"
+
+      - name: Restart Application on EC2
+        uses: appleboy/ssh-action@master # Runs commands inside your EC2 terminal
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/${{ secrets.EC2_USERNAME }}/DAST-DSVW-pipeline-test
+            pm2 restart dast-test || pm2 start dsvw.py --interpreter python3  --name "dast-test"

@@ -1,0 +1,15 @@
+name: Datadog IaC Scan
+on: [push]
+
+jobs:
+  datadog-iac-scan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+    - uses: actions/checkout@v4
+    - uses: DataDog/datadog-iac-scanner-github-action@v1
+      with:
+        dd_api_key: ${{ secrets.DD_API_KEY }}
+        dd_app_key: ${{ secrets.DD_APP_KEY }}
+        dd_site: datadoghq.com
