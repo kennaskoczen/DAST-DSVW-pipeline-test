@@ -45,7 +45,7 @@ class ReqHandler(http.server.BaseHTTPRequestHandler):
                 elif "path" in params:
                     content = (open(os.path.abspath(params["path"]), "rb") if not "://" in params["path"] else urllib.request.urlopen(params["path"])).read().decode()
                 elif "domain" in params:
-                    content = subprocess.run("nslookup " + params["domain"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE, text=True).stdout
+                    content = subprocess.run("nslookup " + params["domain"], shell=True, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE, text=True).stdout
                 elif "xml" in params:
                     content = lxml.etree.tostring(lxml.etree.parse(io.BytesIO(params["xml"].encode()), lxml.etree.XMLParser(load_dtd=True, resolve_entities=True, no_network=False)), pretty_print=True).decode()
                 elif "name" in params:
