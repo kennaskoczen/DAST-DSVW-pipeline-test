@@ -27,6 +27,6 @@ jobs:
     - uses: actions/checkout@v4
     - uses: DataDog/datadog-iac-scanner-github-action@v1
       with:
-        dd_api_key: ${{ secrets.DD_API_KEY }}
-        dd_app_key: ${{ secrets.DD_APP_KEY }}
-        dd_site: datadoghq.com
+        DD_API_KEY: ${{ secrets.DD_API_KEY }}
+        DD_APP_KEY: ${{ secrets.DD_APP_KEY }}
+        DD_SITE: datadoghq.com
