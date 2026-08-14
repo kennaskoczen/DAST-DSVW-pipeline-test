@@ -8,6 +8,8 @@ jobs:
       contents: read
     steps:
     - uses: actions/checkout@v4
+    - name: Get Git metadata
+      run: datadog-ci git-metadata upload
     - uses: DataDog/datadog-iac-scanner-github-action@v1
       with:
         dd_api_key: ${{ secrets.DD_API_KEY }}
