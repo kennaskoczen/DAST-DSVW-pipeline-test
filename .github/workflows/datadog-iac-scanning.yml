@@ -19,9 +19,7 @@ jobs:
           DD_GIT_REPOSITORY_URL: "https://github.com/kennaskoczen/DAST-DSVW-pipeline-test"
           DD_GIT_BRANCH: ${{ github.ref_name }}
           DD_GIT_COMMIT_SHA: ${{ github.sha }}
-        run: |
-          cd ~/DAST-DSVW-pipeline-test
-          datadog-ci git-metadata upload
+        run: datadog-ci git-metadata upload
 
   datadog-iac-scan:
     runs-on: ubuntu-latest
