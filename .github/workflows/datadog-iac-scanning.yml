@@ -2,7 +2,7 @@ name: Datadog IaC Scan
 on: [push]
 
 jobs:
-  datadog-ci-metadata-upload
+  datadog-ci-metadata-upload:
     runs-on: ubuntu-latest
     steps:
       - name: install datadog-ci

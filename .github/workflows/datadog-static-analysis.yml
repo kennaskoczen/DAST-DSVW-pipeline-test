@@ -3,7 +3,7 @@ on: [push]
 name: Datadog Static Code Analysis
 
 jobs:
-  datadog-ci-metadata-upload
+  datadog-ci-metadata-upload:
     runs-on: ubuntu-latest
     steps:
       - name: install datadog-ci
