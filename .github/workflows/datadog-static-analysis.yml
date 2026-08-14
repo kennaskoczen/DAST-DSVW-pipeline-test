@@ -11,12 +11,15 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Fetches all history for all branches and tags
+          fetch-depth: 0
       - name: upload git metadata with datadog-ci
         env:
           DD_API_KEY: ${{ secrets.DD_API_KEY }}
           DD_APP_KEY: ${{ secrets.DD_APP_KEY }}
           DD_SITE: datadoghq.com
+          DD_GIT_REPOSITORY_URL: "https://github.com/kennaskoczen/DAST-DSVW-pipeline-test"
+          DD_GIT_BRANCH: ${{ github.ref_name }}
+          DD_GIT_COMMIT_SHA: ${{ github.sha }}
         run: datadog-ci git-metadata upload
 
   static-analysis:
