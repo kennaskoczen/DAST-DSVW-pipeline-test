@@ -21,7 +21,7 @@ jobs:
           DD_GIT_BRANCH: ${{ github.ref_name }}
           DD_GIT_COMMIT_SHA: ${{ github.sha }}
         run: |
-          cd
+          cd ~/DAST-DSVW-pipeline-test
           datadog-ci git-metadata upload
 
   software-composition-analysis:
