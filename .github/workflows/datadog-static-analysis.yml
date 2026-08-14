@@ -3,6 +3,18 @@ on: [push]
 name: Datadog Static Code Analysis
 
 jobs:
+  datadog-ci-metadata-upload
+    runs-on: ubuntu-latest
+    steps:
+      - name: install datadog-ci
+        uses: DataDog/install-datadog-ci-github-action@v1
+      - name: upload git metadata with datadog-ci
+        run: datadog-ci git-metadata upload
+        with:
+          dd_api_key: ${{ secrets.DD_API_KEY }}
+          dd_app_key: ${{ secrets.DD_APP_KEY }}
+       	  dd_site: datadoghq.com
+
   static-analysis:
     runs-on: ubuntu-latest
     name: Datadog Static Analyzer
