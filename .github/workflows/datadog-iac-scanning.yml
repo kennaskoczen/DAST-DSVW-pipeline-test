@@ -7,6 +7,10 @@ jobs:
     steps:
       - name: install datadog-ci
         uses: DataDog/install-datadog-ci-github-action@v1
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetches all history for all branches and tags
       - name: upload git metadata with datadog-ci
         env:
           DD_API_KEY: ${{ secrets.DD_API_KEY }}
@@ -16,6 +20,7 @@ jobs:
 
   datadog-iac-scan:
     runs-on: ubuntu-latest
+    needs: datadog-ci-metadata-upload
     permissions:
       contents: read
     steps:
