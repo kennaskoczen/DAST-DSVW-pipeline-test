@@ -3,8 +3,25 @@ on: [push]
 name: Datadog Static Code Analysis
 
 jobs:
+  datadog-ci-metadata-upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: install datadog-ci
+        uses: DataDog/install-datadog-ci-github-action@v1
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetches all history for all branches and tags
+      - name: upload git metadata with datadog-ci
+        env:
+          DD_API_KEY: ${{ secrets.DD_API_KEY }}
+          DD_APP_KEY: ${{ secrets.DD_APP_KEY }}
+          DD_SITE: datadoghq.com
+        run: datadog-ci git-metadata upload
+
   static-analysis:
     runs-on: ubuntu-latest
+    needs: datadog-ci-metadata-upload
     name: Datadog Static Analyzer
     steps:
     - name: Checkout
