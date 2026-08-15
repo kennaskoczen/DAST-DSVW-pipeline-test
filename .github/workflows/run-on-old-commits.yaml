@@ -8,9 +8,11 @@ on:
 jobs:
   checkout:
     runs-on: ubuntu-latest
-    uses: actions/checkout@v4
-    with:
-      ref: ${{ github.event.inputs.target_commit }} # Force-checks out your old commit
+    steps:
+      - name: checkout specific old commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.target_commit }} # Force-checks out your old commit
   run-on-old-commit:
     runs-on: ubuntu-latest
     uses: kennaskoczen/DAST-DSVW-pipeline-test/.github/workflows/code-security.yaml@master
