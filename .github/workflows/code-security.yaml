@@ -1,5 +1,5 @@
 on: [push]
-#adding a comment to test push directly to main
+
 jobs:
   github-metadata:
     runs-on: ubuntu-latest
@@ -35,6 +35,7 @@ jobs:
           dd_api_key: ${{ secrets.DD_API_KEY }}
           dd_app_key: ${{ secrets.DD_APP_KEY }}
           dd_site: "datadoghq.com"
+          diff_aware: false
       - name: SAST/Secrets scanning
         id: datadog-static-analysis
         uses: DataDog/datadog-static-analyzer-github-action@v3
