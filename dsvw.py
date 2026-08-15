@@ -6,6 +6,13 @@ try:
 except ImportError:
     print("[!] please install 'python-lxml' to (also) get access to XML vulnerabilities (e.g. '%s')\n" % ("apt-get install python-lxml" if os.name != "nt" else "https://pypi.python.org/pypi/lxml"))
 
+try:
+    sha = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode('utf-8').strip()
+except Exception:
+    sha = "unknown"
+
+os.environ['DD_GIT_COMMIT_SHA'] = sha
+
 NAME, VERSION, GITHUB, AUTHOR, LICENSE = "Damn Small Vulnerable Web (DSVW) < 100 LoC (Lines of Code)", "0.4", "https://github.com/stamparm/DSVW", "Miroslav Stampar (@stamparm)", "Unlicense (public domain)"
 LISTEN_ADDRESS, LISTEN_PORT = "0.0.0.0", 65412
 
