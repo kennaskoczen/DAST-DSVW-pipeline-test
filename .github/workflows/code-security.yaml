@@ -1,9 +1,30 @@
 on: [push]
 #adding a comment to test push directly to main
 jobs:
-  check-quality:
+  github-metadata:
     runs-on: ubuntu-latest
-    name: Datadog Static Analyzer
+    name: Git Metadata Upload
+    steps:
+      - name: install datadog-ci
+        uses: DataDog/install-datadog-ci-github-action@v1
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: upload git metadata with datadog-ci
+        env:
+          DD_API_KEY: ${{ secrets.DD_API_KEY }}
+          DD_APP_KEY: ${{ secrets.DD_APP_KEY }}
+          DD_SITE: datadoghq.com
+          DD_GIT_REPOSITORY_URL: "https://github.com/kennaskoczen/DAST-DSVW-pipeline-test"
+          DD_GIT_BRANCH: ${{ github.ref_name }}
+          DD_GIT_COMMIT_SHA: ${{ github.sha }}
+        run: datadog-ci git-metadata upload
+
+  security-scanning:
+    runs-on: ubuntu-latest
+    name: Datadog Security Scanning
+    needs: "github-metadata"
     steps:
       - name: Checkout
         uses: actions/checkout@v6
