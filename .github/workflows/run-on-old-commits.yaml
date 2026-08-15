@@ -1,3 +1,5 @@
+name: Manual Code Security Scanning for Old/Erroring Commits
+
 on:
   workflow_dispatch:
     inputs:
