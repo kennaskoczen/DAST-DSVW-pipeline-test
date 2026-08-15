@@ -34,7 +34,7 @@ jobs:
           dd_site: "datadoghq.com"
       - name: echo diff_aware flag
         env: 
-          DIFF_AWARE_FLAG: (${{ github.ref }} != format('refs/heads/{0}', github.event.repository.default_branch)) && true || false
+          DIFF_AWARE_FLAG: ${{ github.ref != format('refs/heads/{0}', github.event.repository.default_branch) && true || false }}
         run: |
           echo "diff aware flag: $DIFF_AWARE_FLAG"
       - name: SAST/Secrets scanning
@@ -46,7 +46,7 @@ jobs:
           dd_site: "datadoghq.com"
           secrets_enabled: true
           static_analysis_enabled: true
-          diff_aware: (${{ github.ref }} != format('refs/heads/{0}', github.event.repository.default_branch)) && true || false
+          diff_aware: ${{ github.ref != format('refs/heads/{0}', github.event.repository.default_branch) && true || false }}
       - name: IaC Scanning
         id: datadog-iac-scan
         uses: DataDog/datadog-iac-scanner-github-action@v1
