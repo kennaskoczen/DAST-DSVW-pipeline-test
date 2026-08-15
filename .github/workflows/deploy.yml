@@ -3,7 +3,7 @@ name: Deploy App to EC2
 on:
   push:
     branches:
-      - master # Triggers deployment when you push to the main branch
+      - main
 
 jobs:
   deploy:
