@@ -6,12 +6,45 @@ on:
         required: true
 
 jobs:
-  checkout:
+  security-scanning-old-commit:
     runs-on: ubuntu-latest
+    name: Datadog Security Scanning (old commit)
     steps:
-      - name: checkout specific old commit
+      - name: install datadog-ci
+        uses: DataDog/install-datadog-ci-github-action@v1
+      - name: checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.target_commit }} # Force-checks out your old commit
-  run-on-old-commit:
-    uses: kennaskoczen/DAST-DSVW-pipeline-test/.github/workflows/code-security.yaml@master
+          ref: ${{ github.event.inputs.target_commit }}
+          fetch-depth: 0
+      - name: upload git metadata with datadog-ci
+        env:
+          DD_API_KEY: ${{ secrets.DD_API_KEY }}
+          DD_APP_KEY: ${{ secrets.DD_APP_KEY }}
+          DD_SITE: datadoghq.com
+          DD_GIT_REPOSITORY_URL: "https://github.com/kennaskoczen/DAST-DSVW-pipeline-test"
+          DD_GIT_COMMIT_SHA: ${{ github.event.inputs.target_commit }}
+        run: datadog-ci git-metadata upload
+      - name: SCA scanning (old commit)
+        id: datadog-software-composition-analysis
+        uses: DataDog/datadog-sca-github-action@main
+        with:
+          dd_api_key: ${{ secrets.DD_API_KEY }}
+          dd_app_key: ${{ secrets.DD_APP_KEY }}
+          dd_site: "datadoghq.com"
+      - name: SAST/Secrets scanning (old commit)
+        id: datadog-static-analysis
+        uses: DataDog/datadog-static-analyzer-github-action@v3
+        with:
+          dd_app_key: ${{ secrets.DD_APP_KEY }}
+          dd_api_key: ${{ secrets.DD_API_KEY }}
+          dd_site: "datadoghq.com"
+          secrets_enabled: true
+          static_analysis_enabled: true
+      - name: IaC scanning (old commit)
+        id: datadog-iac-scan
+        uses: DataDog/datadog-iac-scanner-github-action@v1
+        with:
+          dd_api_key: ${{ secrets.DD_API_KEY }}
+          dd_app_key: ${{ secrets.DD_APP_KEY }}
+          dd_site: datadoghq.com
