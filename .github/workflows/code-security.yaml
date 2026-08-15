@@ -1,5 +1,5 @@
 on: [push]
-#adding a comment to test push directly to main
+
 jobs:
   github-metadata:
     runs-on: ubuntu-latest
@@ -44,6 +44,7 @@ jobs:
           dd_site: "datadoghq.com"
           secrets_enabled: true
           static_analysis_enabled: true
+          diff_aware: false
       - name: IaC Scanning
         id: datadog-iac-scan
         uses: DataDog/datadog-iac-scanner-github-action@v1
