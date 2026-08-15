@@ -6,13 +6,13 @@ on:
         required: true
 
 jobs:
-  github-metadata-old-commit:
+  security-scanning-old-commit:
     runs-on: ubuntu-latest
-    name: Git Metadata Upload (old commit)
+    name: Datadog Security Scanning (old commit)
     steps:
       - name: install datadog-ci
         uses: DataDog/install-datadog-ci-github-action@v1
-      - name: checkout old commit
+      - name: checkout
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.target_commit }}
@@ -25,12 +25,6 @@ jobs:
           DD_GIT_REPOSITORY_URL: "https://github.com/kennaskoczen/DAST-DSVW-pipeline-test"
           DD_GIT_COMMIT_SHA: ${{ github.event.inputs.target_commit }}
         run: datadog-ci git-metadata upload
-
-  security-scanning-old-commit:
-    runs-on: ubuntu-latest
-    name: Datadog Security Scanning (old commit)
-    needs: "github-metadata-old-commit"
-    steps:
       - name: SCA scanning (old commit)
         id: datadog-software-composition-analysis
         uses: DataDog/datadog-sca-github-action@main
@@ -47,7 +41,6 @@ jobs:
           dd_site: "datadoghq.com"
           secrets_enabled: true
           static_analysis_enabled: true
-          diff_aware: false
       - name: IaC scanning (old commit)
         id: datadog-iac-scan
         uses: DataDog/datadog-iac-scanner-github-action@v1

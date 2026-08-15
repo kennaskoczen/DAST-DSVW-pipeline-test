@@ -3,9 +3,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  github-metadata:
+
+  security-scanning:
     runs-on: ubuntu-latest
-    name: Git Metadata Upload
+    name: Datadog Security Scanning
     steps:
       - name: install datadog-ci
         uses: DataDog/install-datadog-ci-github-action@v1
@@ -22,12 +23,6 @@ jobs:
           DD_GIT_BRANCH: ${{ github.ref_name }}
           DD_GIT_COMMIT_SHA: ${{ github.sha }}
         run: datadog-ci git-metadata upload
-
-  security-scanning:
-    runs-on: ubuntu-latest
-    name: Datadog Security Scanning
-    needs: "github-metadata"
-    steps:
       - name: SCA Scanning
         id: datadog-software-composition-analysis
         uses: DataDog/datadog-sca-github-action@main
@@ -44,7 +39,6 @@ jobs:
           dd_site: "datadoghq.com"
           secrets_enabled: true
           static_analysis_enabled: true
-          diff_aware: false
       - name: IaC Scanning
         id: datadog-iac-scan
         uses: DataDog/datadog-iac-scanner-github-action@v1
