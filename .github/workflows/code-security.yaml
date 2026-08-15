@@ -1,5 +1,5 @@
 on: [push]
-
+#adding a comment to test push directly to main
 jobs:
   check-quality:
     runs-on: ubuntu-latest
