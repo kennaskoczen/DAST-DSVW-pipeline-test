@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: install datadog-ci
         uses: DataDog/install-datadog-ci-github-action@v1
-      - name: Checkout
+      - name: checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -28,8 +28,6 @@ jobs:
     name: Datadog Security Scanning
     needs: "github-metadata"
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
       - name: SCA Scanning
         id: datadog-software-composition-analysis
         uses: DataDog/datadog-sca-github-action@main
