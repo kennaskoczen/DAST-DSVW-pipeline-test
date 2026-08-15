@@ -6,13 +6,12 @@ on:
         required: true
 
 jobs:
-  run-on-old-commit:
-    runs-on: ubuntu-latest
+  checkout:
     steps:
       - name: Checkout specific old commit
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.target_commit }} # Force-checks out your old commit
-          
-      - name: Run your steps
-        uses: kennaskoczen/DAST-DSVW-pipeline-test/.github/workflows/code-security.yaml@master
+  run-on-old-commit:
+    runs-on: ubuntu-latest
+    uses: kennaskoczen/DAST-DSVW-pipeline-test/.github/workflows/code-security.yaml@master
